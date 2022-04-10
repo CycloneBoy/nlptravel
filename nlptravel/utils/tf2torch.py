@@ -78,6 +78,12 @@ if __name__ == "__main__":
     bert.state_dict()['hanzi_linear.weight'].copy_(torch.Tensor(linear_w))
     bert.state_dict()['hanzi_linear.bias'].copy_(torch.Tensor(linear_b))
 
+    # linear pinyin
+    linear_w = reader.get_tensor('output_py/output_weights')
+    linear_b = reader.get_tensor('output_py/output_bias')
+    bert.state_dict()['pinyin_linear.weight'].copy_(torch.Tensor(linear_w))
+    bert.state_dict()['pinyin_linear.bias'].copy_(torch.Tensor(linear_b))
+
     # gamma 和kernel是权重矩阵，bias和beta是偏置项
     for name in variables:
         if ('adam_v' not in name and 'adam_m' not in name) and 'bert' in name:
