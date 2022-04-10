@@ -193,7 +193,8 @@ def main(model_name_or_path=None, run_log=None):
         tokenizer = AutoTokenizer.from_pretrained(model_args.model_name_or_path)
     elif model_args.model_name_or_path:
         # tokenizer = BertTokenizer.from_pretrained(
-        model_name_or_path = NlpPretrain.ROBERTA_CHINESE_WWM_EXT_PYTORCH.path
+        # model_name_or_path = NlpPretrain.ROBERTA_CHINESE_WWM_EXT_PYTORCH.path
+        model_name_or_path = model_args.model_name_or_path
 
         tokenizer = BertTokenizer.from_pretrained(model_name_or_path)
     else:

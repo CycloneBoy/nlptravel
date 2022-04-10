@@ -34,8 +34,9 @@ class DatasetTest(unittest.TestCase):
         model_name_or_path = Constants.ELECTRA_SAMLL_DISCRIMINATOR
         # model_name_or_path = NlpPretrain.ROBERTA_CHINESE_WWM_EXT_PYTORCH.path
 
-        tokenizer = BertTokenizer(vocab_file=Constants.BERT_VOCAB_FILE)
+        # tokenizer = BertTokenizer(vocab_file=Constants.BERT_VOCAB_FILE)
         # tokenizer = ElectraTokenizer.from_pretrained(model_name_or_path)
+        tokenizer = BertTokenizer.from_pretrained(model_name_or_path)
 
         eval_data_file = Constants.CSC_DATA_EVAL_15_DIR_CSV
         dataset = ClsIntentAndSlotDataset(file_path=eval_data_file, tokenizer=tokenizer, block_size=max_length)
