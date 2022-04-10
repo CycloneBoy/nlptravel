@@ -48,9 +48,8 @@ setup(
     keywords='NLP,Chinese,Travel,pytorch,deep learning',
     install_requires=reqs.strip().split('\n'),
     packages=find_packages(),
-    # package_dir={'finanicial_ner': 'financial_ner'},
     # package_data={
-    #     'financial_ner': ['*.*', '../LICENSE', '../README.*', '../*.txt', 'data/*', 'data/en/en.json.gz',
+    #     'nlptravel': ['*.*', '../LICENSE', '../README.*', '../*.txt', 'data/*', 'data/en/en.json.gz',
     #                     'utils/*.', 'bert/*', 'deep_context/*', 'conv_seq2seq/*', 'seq2seq_attention/*',
     #                     'transformer/*', 'electra/*']}
 )
