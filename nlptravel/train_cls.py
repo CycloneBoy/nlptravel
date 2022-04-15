@@ -7,7 +7,7 @@
 from copy import deepcopy
 
 import numpy as np
-from nlptravel.datasets.cls.cls_dataset_bert import ClsBertDataset
+from nlptravel.dataset.cls.cls_dataset_bert import ClsBertDataset
 from transformers import AutoModelForSequenceClassification, TrainingArguments, Trainer, AlbertTokenizer, AutoTokenizer, \
     PreTrainedTokenizer, AutoModelForTokenClassification
 
@@ -22,7 +22,7 @@ from torch import nn
 from transformers import set_seed, AutoConfig, CONFIG_MAPPING, BertTokenizer, ElectraTokenizer, ElectraConfig, \
     BertConfig
 
-from nlptravel.datasets.cls.cls_dataset_itent_slot import ClsIntentAndSlotDataset
+from nlptravel.dataset.cls.cls_dataset_itent_slot import ClsIntentAndSlotDataset
 from nlptravel.entity.ner_common_entity import ModelArguments, DataTrainingArguments
 from nlptravel.metrics.classification.cls_calc_metrics import ClsCalcMetrics
 from nlptravel.model.classification.cls_bert_model import JointBERT

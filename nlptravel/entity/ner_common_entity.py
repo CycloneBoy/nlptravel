@@ -155,7 +155,7 @@ class DataTrainingArguments:
         default=128,
         metadata={
             "help": "Optional input sequence length after tokenization."
-                    "The training datasets will be truncated in block of this size for training."
+                    "The training dataset will be truncated in block of this size for training."
                     "Default to the model max input length for single sentence inputs (take into account special tokens)."
         },
     )

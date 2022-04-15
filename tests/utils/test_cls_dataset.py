@@ -12,7 +12,7 @@ import unittest
 from torch.utils.data import DataLoader
 from transformers import ElectraTokenizer, BertTokenizer, AutoModelForSequenceClassification
 
-from nlptravel.datasets.cls.cls_dataset_itent_slot import ClsIntentAndSlotDataset
+from nlptravel.dataset.cls.cls_dataset_itent_slot import ClsIntentAndSlotDataset
 from nlptravel.model.classification.cls_bert_model import JointBERT
 from nlptravel.utils.constant import Constants
 
@@ -42,7 +42,7 @@ class DatasetTest(unittest.TestCase):
         dataset = ClsIntentAndSlotDataset(file_path=eval_data_file, tokenizer=tokenizer, block_size=max_length)
         print(dataset[0])
 
-        # datasets.save_to_file(Constants.CSC_DATA_EVAL_15_CLS_LABEL_DIR_CSV)
+        # dataset.save_to_file(Constants.CSC_DATA_EVAL_15_CLS_LABEL_DIR_CSV)
 
         collate_fn = dataset.get_collate_fn()
         dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=False, collate_fn=collate_fn)

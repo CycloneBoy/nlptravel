@@ -94,7 +94,7 @@ class ClsIntentAndSlotDataset(Dataset):
         if len(self.input_examples) == 0:
             self.input_examples = FileUtils.read_data_from_file(self.file_path, data_type=self.data_type,
                                                                 column_name=Constants.COLUMN_NAME_2)
-            logger.info("Creating features from datasets file at %s", self.file_path)
+            logger.info("Creating features from dataset file at %s", self.file_path)
 
         # csc 两列 转
         for index, example in enumerate(tqdm(self.input_examples)):
