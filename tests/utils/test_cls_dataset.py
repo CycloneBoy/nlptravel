@@ -7,7 +7,11 @@
 
 import os.path
 import shutil
+import subprocess
 import unittest
+import wandb
+from nlptravel.utils.cmd_utils import CmdUtils
+from nlptravel.utils.file_utils import FileUtils
 
 from torch.utils.data import DataLoader
 from transformers import ElectraTokenizer, BertTokenizer, AutoModelForSequenceClassification
@@ -62,3 +66,11 @@ class DatasetTest(unittest.TestCase):
 
         output = model(**batch)
         print(output)
+
+    def test_wandb_login(self):
+        with open("/home/sl/wandb.token", mode='r') as f:
+            token = str(f.readline()).replace("\n", "")
+        wandb.login(key=token)
+
+    def test_modify_constants_dir(self):
+        CmdUtils.modify_constants_py_file()

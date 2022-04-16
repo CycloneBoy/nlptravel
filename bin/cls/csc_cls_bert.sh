@@ -19,6 +19,6 @@
 --save_strategy epoch \
 --save_total_limit 10 \
 --logging_steps 1000 \
---metric_for_best_model f1 \
+--metric_for_best_model sent-correct-f1 \
 --show_info \
 --loss_weight 0

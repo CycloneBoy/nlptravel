@@ -49,3 +49,12 @@ f1
 --loss_weight
 0
 ```
+
+## data
+### csc
+- train : 281381
+- test: sighan15 1100
+
+### cls
+- train: 562156
+- test : sighan15 1641

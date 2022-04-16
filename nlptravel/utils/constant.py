@@ -32,6 +32,16 @@ class Constants(object):
     # NLP_CSC_DATA_DIR = f"{NLP_DATA_DIR}/nlp-csc"
     ############################################################################################
 
+    ############################################################################################
+    # google colab 数据目录
+
+    # COLAB_BASIC_DIR = "/content/drive/MyDrive/NLP"
+    # WORK_DIR = f"{COLAB_BASIC_DIR}/nlptravel"
+    # NLP_DATA_DIR = f"{COLAB_BASIC_DIR}"
+    # NLP_CSC_DATA_DIR = f"{NLP_DATA_DIR}/csc"
+    ############################################################################################
+
+
     # SRC数据保存目录
     DATA_DIR = f"{WORK_DIR}/data"
     LOG_DIR = f"{WORK_DIR}/logs"
