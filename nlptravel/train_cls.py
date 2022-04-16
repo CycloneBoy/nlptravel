@@ -98,6 +98,15 @@ def build_bert_dataset(training_args: TrainingArguments, tokenizer: PreTrainedTo
 
     data_file_list = FileUtils.get_dataset_path_cls(dataset_name=dataset_name)
 
+    # 采用用户输入
+    if dataset_name == Constants.DATASET_NAME_CLS_USER:
+        data_file_list = {
+            "train": data_args.train_data_file,
+            "eval": data_args.eval_data_file,
+            "test": data_args.test_data_file,
+            "eval_label": data_args.eval_label_file,
+        }
+
     # 构建dataset
     train_dataset = None
 
@@ -134,6 +143,9 @@ def build_bert_dataset(training_args: TrainingArguments, tokenizer: PreTrainedTo
 def main(model_name_or_path=None, run_log=None):
     """
     训练模型
+
+    :param model_name_or_path:
+    :param run_log:
     :return:
     """
     model_args, data_args, training_args = CommonUtils.parse_model_and_data_args(show_info=True)

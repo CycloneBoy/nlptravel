@@ -14,18 +14,31 @@ class Constants(object):
     """
     # WORK_DIR = "./"
 
+    ############################################################################################
+    # 本地数据目录
+    # 工作目录
     WORK_DIR = "/home/sl/workspace/python/a2022/nlptravel"
 
-    # 数据保存目录
+    # 数据存储目录
+    NLP_DATA_DIR = f"/home/sl/workspace/data/nlp"
+    NLP_CSC_DATA_DIR = f"{NLP_DATA_DIR}/csc"
+    ############################################################################################
+
+    ############################################################################################
+    # kaggle 数据目录
+    #
+    # WORK_DIR = "/kaggle/working/nlptravel"
+    # NLP_DATA_DIR = f"/kaggle/input"
+    # NLP_CSC_DATA_DIR = f"{NLP_DATA_DIR}/nlp-csc"
+    ############################################################################################
+
+    # SRC数据保存目录
     DATA_DIR = f"{WORK_DIR}/data"
     LOG_DIR = f"{WORK_DIR}/logs"
 
     # 日志相关
     LOG_FILE = f"{LOG_DIR}/run.log"
     LOG_LEVEL = "debug"
-
-    NLP_DATA_DIR = f"/home/sl/workspace/data/nlp"
-    NLP_CSC_DATA_DIR = f"{NLP_DATA_DIR}/csc"
 
     BASE_DIR = WORK_DIR
     SRC_DIR = f"{WORK_DIR}/nlptravel"
@@ -81,7 +94,7 @@ class Constants(object):
     CSC_RLS_DATA_EVAL_15_DIR = f"{CSC_RLS_DATA_DIR}/test.sighan15.pkl"
     CSC_RLS_DATA_EVAL_LABEL_15_DIR = f"{CSC_RLS_DATA_DIR}/test.sighan15.lbl.tsv"
     CSC_RLS_DATA_EVAL_15_DIR_CSV = f"{CSC_RLS_DATA_DIR}/test_sighan15.csv"
-    CSC_RLS_DATA_EVAL_15_CLS_LABEL_DIR_CSV = f"{CSC_RLS_DATA_DIR}/test_sighan15_cls_label.csv"
+    # CSC_RLS_DATA_EVAL_15_CLS_LABEL_DIR_CSV = f"{CSC_RLS_DATA_DIR}/test_sighan15_cls_label.csv"
 
     CSC_RLS_DATA_EVAL_14_DIR = f"{CSC_RLS_DATA_DIR}/test.sighan14.pkl"
     CSC_RLS_DATA_EVAL_LABEL_14_DIR = f"{CSC_RLS_DATA_DIR}/test.sighan14.lbl.tsv"
@@ -124,7 +137,12 @@ class Constants(object):
     CSC_DATA_EVAL_15_DIR_CSV = f"{NLP_CSC_DATA_DIR}/sighan15_test.txt"
     CSC_DATA_EVAL_15_CLS_LABEL_DIR_CSV = f"{NLP_CSC_DATA_DIR}/sighan15_test_cls_label.csv"
 
+    # 评估文件的标签
     CSC_RLS_DATA_EVAL_15_CLS_LABEL_DIR_CSV = CSC_DATA_EVAL_15_CLS_LABEL_DIR_CSV
+
+    # cls_user
+    DATASET_NAME_CLS_USER = "cls_user"
+
 
     ####################################################################################
     # 命名实体识别 NER
