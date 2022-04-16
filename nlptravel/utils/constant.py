@@ -112,7 +112,8 @@ class Constants(object):
     CLS_DATA_TNEWS_TEST = f"{NLP_DATA_DIR}/tnews_public/test.json"
 
     # RLS 中间输出文件路径
-    CSC_RLS_DATA_OUTPUT_DIR = f"{CSC_RLS_RAW_CHECKPOINT_DIR}/output"
+    # CSC_RLS_DATA_OUTPUT_DIR = f"{CSC_RLS_RAW_CHECKPOINT_DIR}/output"
+    CSC_RLS_DATA_OUTPUT_DIR = f"{DATA_DIR}/output"
 
     # cls_slot
     DATASET_NAME_CLS_SLOT = "cls_slot"

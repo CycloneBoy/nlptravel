@@ -23,7 +23,7 @@ csc metric dcn
 class CscMetricDcn(object):
 
     @staticmethod
-    def eval_predict(eval_file_path, predict_result_path, eval_ture_input=False, show_info=False):
+    def eval_predict(eval_file_path, predict_result_path, eval_ture_input=False, show_info=False, save_file_dir=None):
         """
         预测结果
 
@@ -31,6 +31,7 @@ class CscMetricDcn(object):
         :param predict_result_path: 预测的结果，带序号
         :param eval_ture_input:
         :param show_info:
+        :param save_file_dir:
         :return:
         """
         input_examples = FileUtils.read_data_with_file_end(file_name=eval_file_path, show_info=show_info,
@@ -226,7 +227,8 @@ class CscMetricDcn(object):
         return precision, recall, f1_score
 
     @staticmethod
-    def generate_sighan_format(eval_file_path, predict_result_path, eval_ture_input=False, show_info=False, ):
+    def generate_sighan_format(eval_file_path, predict_result_path, eval_ture_input=False, show_info=False,
+                               save_file_dir=None):
         """
         生成sighan15 测试格式数据
         :return:
