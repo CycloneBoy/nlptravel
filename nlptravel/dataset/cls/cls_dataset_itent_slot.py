@@ -250,8 +250,12 @@ class DataCollatorClsIntentAndSlot:
         batch_attention_mask_label = []
         for feature in features:
             seq_len = feature["input_lens"]
-            attention_mask = torch.concat(
-                [torch.zeros(1), torch.ones_like(feature["input_ids"])[1:seq_len + 1], torch.zeros(1)], dim=0)
+            # loss_mask = [torch.zeros(1), torch.ones_like(feature["input_ids"])[1:seq_len + 1], torch.zeros(1)]
+            # attention_mask = torch.concat(loss_mask, dim=0)
+            loss_mask = [1 for _ in range(seq_len)]
+            loss_mask.insert(0, 0)
+            loss_mask.append(0)
+            attention_mask = torch.LongTensor(loss_mask)
             batch_attention_mask_label.append(attention_mask)
 
         # padding
