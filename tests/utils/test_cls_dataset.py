@@ -10,6 +10,8 @@ import shutil
 import subprocess
 import unittest
 import wandb
+
+from nlptravel.metrics.csc.csc_metric_dcn import CscMetricDcn
 from nlptravel.utils.cmd_utils import CmdUtils
 from nlptravel.utils.file_utils import FileUtils
 
@@ -19,6 +21,7 @@ from transformers import ElectraTokenizer, BertTokenizer, AutoModelForSequenceCl
 from nlptravel.dataset.cls.cls_dataset_itent_slot import ClsIntentAndSlotDataset
 from nlptravel.model.classification.cls_bert_model import JointBERT
 from nlptravel.utils.constant import Constants
+from nlptravel.utils.logger_utils import logger
 
 """
 测试模型和数据
@@ -74,3 +77,20 @@ class DatasetTest(unittest.TestCase):
 
     def test_modify_constants_dir(self):
         CmdUtils.modify_constants_py_file()
+
+    def test_eval_dcn(self):
+        eval_file_path = Constants.CSC_RLS_DATA_EVAL_15_CLS_LABEL_DIR_CSV
+        predict_result_path = "/home/sl/workspace/python/a2022/nlptravel/data/test/cls_detect_predict.txt"
+        pred_path, orig_truth_path = CscMetricDcn.generate_sighan_format(eval_file_path,
+                                                                         predict_result_path=predict_result_path,
+                                                                         eval_ture_input=False,
+                                                                         show_info=True, )
+
+    def test_eval_cls(self):
+        eval_file_path = Constants.CSC_RLS_DATA_EVAL_15_CLS_LABEL_DIR_CSV
+        predict_result_path = "/home/sl/workspace/python/a2022/nlptravel/data/test/cls_detect_predict.txt"
+        dcn_results = CscMetricDcn.eval_predict(eval_file_path=eval_file_path,
+                                                    predict_result_path=predict_result_path,
+                                                    show_info=True)
+
+        logger.info(f"{dcn_results}")

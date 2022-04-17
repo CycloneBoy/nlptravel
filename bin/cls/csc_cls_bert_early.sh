@@ -1,0 +1,25 @@
+!python /kaggle/working/nlptravel/nlptravel/train_cls.py \
+--model_type bert \
+--task_name cls_slot \
+--dataset_name cls_slot \
+--model_name AutoModelForTokenClassification \
+--output_dir ./AutoModelForTokenClassification \
+--do_train \
+--do_eval \
+--per_device_train_batch_size 64 \
+--per_device_eval_batch_size 64 \
+--model_name_or_path voidful/albert_chinese_tiny \
+--num_train_epochs 10 \
+--learning_rate 5e-5 \
+--warmup_steps 10000 \
+--fp16 \
+--fp16_full_eval \
+--evaluation_strategy steps \
+--eval_steps 1000 \
+--save_strategy epoch \
+--save_total_limit 10 \
+--logging_steps 1000 \
+--metric_for_best_model sent-correct-f1 \
+--load_best_model_at_end \
+--show_info \
+--loss_weight 0

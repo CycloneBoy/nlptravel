@@ -301,7 +301,7 @@ class ClsTrainer(Trainer):
             eval_metrics = super().evaluate(eval_dataset=eval_dataset, ignore_keys=ignore_keys,
                                             metric_key_prefix=metric_key_prefix)
 
-            self.save_eval_predict_to_dest(eval_metrics)
+        self.save_eval_predict_to_dest(eval_metrics)
 
         # add save the eval metric to db
         eval_end_time = TimeUtils.now_str()

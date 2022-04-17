@@ -4,7 +4,7 @@
 # @File    ：csc_metric_dcn.py
 # @Author  ：sl
 # @Date    ：2022/2/28 15:05
-
+from copy import deepcopy
 
 import pandas as pd
 
@@ -101,6 +101,82 @@ class CscMetricDcn(object):
             logger.info(("metric_dcn : {}".format(metric_dcn)))
 
         metric_csc = {"metric_soft_mask_bert": metric_soft_mask_bert, "metric_dcn": metric_dcn}
+        return metric_csc
+
+    @staticmethod
+    def eval_predict_cls(eval_file_path, predict_result_path, eval_ture_input=False, show_info=False,
+                         save_file_dir=None):
+        """
+        预测结果
+
+        :param eval_file_path:  原始的文件
+        :param predict_result_path: 预测的结果，带序号
+        :param eval_ture_input:
+        :param show_info:
+        :param save_file_dir:
+        :return:
+        """
+        input_examples = FileUtils.read_data_with_file_end(file_name=eval_file_path, show_info=show_info,
+                                                           eval_ture_input=eval_ture_input, return_str=False)
+
+        df = pd.read_csv(predict_result_path, sep="\t", names=['text'])
+
+        length_not_same = 0
+
+        char_labels_list = []
+        char_pred_list = []
+
+        sentence_labels_list = []
+        sentence_pred_list = []
+        for index, example in enumerate(input_examples):
+            predict = df.iloc[index, 0]
+            pred = str(predict).split()
+            pred = pred[:len(example.text_a)]
+
+            example.text_b = pred
+            if eval_ture_input:
+                example.text_a = example.label
+
+            # for cls
+            if len(example.text_a) != len(example.text_b) or len(example.text_a) != len(example.text_b):
+                length_not_same += 1
+                if length_not_same < 2:
+                    logger.info(f"数据长度不一致：index :{index} ")
+                    logger.info(f"src: {example.text_a}")
+                    logger.info(f"tag: {example.label}")
+                    logger.info(f"prd: {predict}")
+                    logger.info("")
+
+                continue
+
+            char_pred_list.extend([int(item) for item in pred])
+            char_labels_list.extend([int(item) for item in example.label])
+
+            if " ".join(pred) == " ".join(example.label):
+                if sum([int(item) for item in example.label]) > 0:
+                    sentence_pred_list.append(1)
+                else:
+                    sentence_pred_list.append(0)
+            else:
+                sentence_pred_list.append(0)
+
+            if sum([int(item) for item in example.label]) > 0:
+                sentence_labels_list.append(1)
+            else:
+                sentence_labels_list.append(0)
+
+        average = 'binary'
+        char_result = CommonUtils.compute_metrics_cls(labels=char_labels_list, preds=char_pred_list,
+                                                      average=average)
+        sentence_result = CommonUtils.compute_metrics_cls(labels=sentence_labels_list, preds=sentence_pred_list,
+                                                          average=average)
+
+        if show_info:
+            logger.info(
+                f"数据长度不一致数量: {length_not_same} / {len(input_examples)} - {length_not_same / len(input_examples)}")
+            logger.info("--------------------- EVAL SoftMaskBert metric------------------------------")
+
+        metric_csc = {"metric_soft_mask_bert": char_result, "metric_dcn": sentence_result}
         return metric_csc
 
     @staticmethod
@@ -249,7 +325,8 @@ class CscMetricDcn(object):
                 pred = str(predict).split()
                 if len(pred) < 3:
                     pred = list(predict)
-                predict = pred[:len(example.label)]
+                src_len = len(example.label.split()) if isinstance(example.label, str) else len(example.label)
+                predict = pred[:src_len]
 
             example.text_b = " ".join(predict)
 

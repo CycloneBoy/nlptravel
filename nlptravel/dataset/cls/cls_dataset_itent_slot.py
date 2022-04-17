@@ -45,6 +45,7 @@ class ClsIntentAndSlotDataset(Dataset):
                  use_rdrop_loss=False, *args, **kwargs):
 
         # print(file_path, os.path.isfile(file_path))
+        print(file_path)
         assert os.path.isfile(file_path)
 
         self.file_path = file_path
@@ -260,7 +261,7 @@ class DataCollatorClsIntentAndSlot:
 
         # padding
         batch_input_ids = pad_sequence(batch_input_ids, batch_first=True, padding_value=0)
-        batch_detect_labels = pad_sequence(batch_detect_labels, batch_first=True, padding_value=0)
+        batch_detect_labels = pad_sequence(batch_detect_labels, batch_first=True, padding_value=-100)
         batch_attention_mask = pad_sequence(batch_attention_mask, batch_first=True, padding_value=0)
         batch_attention_mask_label = pad_sequence(batch_attention_mask_label, batch_first=True, padding_value=0)
 

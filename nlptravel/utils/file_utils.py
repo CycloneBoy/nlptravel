@@ -664,13 +664,13 @@ class FileUtils(BaseUtil):
                                                                  eval_ture_input=eval_ture_input, return_str=return_str)
         else:
             input_examples = FileUtils.read_data_from_csv(file_name=file_name, show_info=show_info, sep=sep,
-                                                          column_name=column_name)
+                                                          column_name=column_name, return_str=return_str)
 
         return input_examples
 
     @staticmethod
     def read_data_from_csv(file_name, sep=Constants.DELIMITER_TAB, column_name=Constants.COLUMN_NAME_4,
-                           show_info=False, text_index=0, label_index=1) -> List[
+                           show_info=False, text_index=0, label_index=1, return_str=True, ) -> List[
         InputExample]:
         """
         通过pandas 读取数据
@@ -688,9 +688,14 @@ class FileUtils(BaseUtil):
                 line = line.strip()
                 split_line = str(line).split(sep)
                 text_a = split_line[text_index]
+                if not return_str:
+                    text_a = str(text_a).split()
 
                 if len(split_line) > 1:
                     label = split_line[label_index]
+                    if not return_str:
+                        label = str(label).split()
+
                 else:
                     label = None
                 run_num += 1
