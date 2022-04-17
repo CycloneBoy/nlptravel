@@ -99,3 +99,6 @@ class CmdUtils(BaseUtil):
 
         FileUtils.save_to_text(result_file, "\n".join(results))
         print(f"rewrite the modify constants file")
+
+if __name__ == '__main__':
+    CmdUtils.modify_constants_py_file()
