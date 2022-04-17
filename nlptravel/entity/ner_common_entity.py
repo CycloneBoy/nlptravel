@@ -77,7 +77,7 @@ class ModelArguments:
     filter_sizes: str = field(default="2,3,4", metadata={"help": "filter_sizes"})
     loss_weight: float = field(default=1.0, metadata={"help": "loss_weight"})
     early_stopping_patience: int = field(default=-1, metadata={"help": "early_stopping_patience"})
-    early_stopping_threshold: int = field(default=0.005, metadata={"help": "early_stopping_threshold"})
+    early_stopping_threshold: float = field(default=0.005, metadata={"help": "early_stopping_threshold"})
 
     model_name_or_path: Optional[str] = field(
         default=NlpPretrain.ROBERTA_CHINESE_WWM_EXT_PYTORCH.path,
