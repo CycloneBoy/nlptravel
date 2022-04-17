@@ -9,7 +9,7 @@ from copy import deepcopy
 import numpy as np
 from nlptravel.dataset.cls.cls_dataset_bert import ClsBertDataset
 from transformers import AutoModelForSequenceClassification, TrainingArguments, Trainer, AlbertTokenizer, AutoTokenizer, \
-    PreTrainedTokenizer, AutoModelForTokenClassification
+    PreTrainedTokenizer, AutoModelForTokenClassification, EarlyStoppingCallback
 
 from transformers.training_args import default_logdir
 
@@ -231,6 +231,12 @@ def main(model_name_or_path=None, run_log=None):
         data_args=data_args,
         model_args=model_args)
 
+    if model_args.early_stopping_patience > 0:
+        callbacks = [EarlyStoppingCallback(early_stopping_patience=model_args.early_stopping_patience,
+                                           early_stopping_threshold=model_args.early_stopping_threshold)]
+    else:
+        callbacks = None
+
     # trainer
     trainer = ClsTrainer(
         model=model,
@@ -242,7 +248,8 @@ def main(model_name_or_path=None, run_log=None):
         data_args=data_args,
         model_args=model_args,
         run_log=run_log,
-        compute_metrics=run_compute_metrics
+        compute_metrics=run_compute_metrics,
+        callbacks=callbacks
     )
 
     # Training

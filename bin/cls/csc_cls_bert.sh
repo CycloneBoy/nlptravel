@@ -20,5 +20,6 @@
 --save_total_limit 10 \
 --logging_steps 1000 \
 --metric_for_best_model sent-correct-f1 \
+--load_best_model_at_end \
 --show_info \
 --loss_weight 0

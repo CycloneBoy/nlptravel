@@ -6,3 +6,4 @@ nlptravel.egg-info
 /outputs
 /nlptravel/AutoModelForTokenClassification
 /nlptravel/data
+/nlptravel/wandb

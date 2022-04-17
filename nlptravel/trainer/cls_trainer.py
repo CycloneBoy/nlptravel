@@ -15,11 +15,13 @@ import traceback
 import torch.nn.functional as F
 import numpy as np
 import torch
+from nlptravel.loss.focal_loss import FocalLoss
+from nlptravel.loss.label_smoothing import LabelSmoothingCrossEntropy
 
 from torch import nn, optim
+from torch.nn import CrossEntropyLoss
 from torch.utils.data import DataLoader, Dataset, RandomSampler, SequentialSampler
 from torch.utils.data.distributed import DistributedSampler
-
 
 from tqdm import tqdm
 from transformers import PreTrainedModel, TrainingArguments, DataCollator, PreTrainedTokenizerBase, EvalPrediction, \
@@ -78,6 +80,10 @@ class ClsTrainer(Trainer):
         self.run_log = run_log
         self.output_dir = self.args.output_dir
 
+        self.current_best_metric = 0
+        self.loss_type = self.model_args.loss_type
+        self.loss_fct = self.build_criterion()
+
         ####################################################################
         # rdrop loss
         #
@@ -93,6 +99,42 @@ class ClsTrainer(Trainer):
         self.custom_train = False
         if self.model_args.model_name == ModelNameType.CLS_TEXT_CNN.desc:
             self.custom_train = True
+
+    def build_criterion(self):
+        """
+        获取loss 类型
+        """
+        # assert self.loss_type in ['lsr', 'focal', 'ce']
+        ignore_index = self.model_args.loss_ignore_index if self.model_args.loss_ignore_index != -11 else -100
+        reduction = self.model_args.loss_reduction if self.model_args.loss_reduction != "default" else "mean"
+        logger.info(f"loss setting: loss_type: {self.loss_type} ignore_index: {ignore_index} reduction:{reduction} ")
+
+        if self.loss_type == 'lsr':
+            self.loss_fct = LabelSmoothingCrossEntropy(ignore_index=ignore_index, reduction=reduction)
+        elif self.loss_type == 'focal':
+            self.loss_fct = FocalLoss(gamma=self.model_args.focal_gamma, ignore_index=ignore_index, reduction=reduction)
+        else:
+            self.loss_fct = CrossEntropyLoss(ignore_index=ignore_index, reduction=reduction)
+        return self.loss_fct
+
+    def save_best_model(self, result):
+        """
+        保存最好的模型
+
+        :param result:
+        :return:
+        """
+        best_metric_name = f"eval_{self.args.metric_for_best_model}"
+        best_metric = result[best_metric_name] if best_metric_name in result else None
+        if best_metric is not None and self.state.epoch is not None:
+            if best_metric > self.current_best_metric:
+                model_state_dict = self.model.state_dict()
+                save_best_model_path = f"{self.output_dir}/best_model/pytorch_model.bin"
+                FileUtils.check_file_exists(save_best_model_path)
+                torch.save(model_state_dict, save_best_model_path)
+                self.current_best_metric = best_metric
+                logger.info(
+                    f"保存最好的模型：{self.current_best_metric} - epoch: {self.state.epoch} - global_step: {self.state.global_step} - {save_best_model_path} ")
 
     def get_train_dataloader(self) -> DataLoader:
         """
@@ -163,6 +205,11 @@ class ClsTrainer(Trainer):
         if self.custom_rdrop_loss:
             y_pred = outputs[1]
             loss = self.rdrop_loss(y_pred, labels=labels, ce_loss=loss)
+
+        if self.loss_fct != "ce":
+            y_pred = outputs[1]
+            num_classes = y_pred.size()[-1]
+            loss = self.loss_fct(y_pred.view(-1, num_classes), labels.view(-1))
 
         return (loss, outputs) if return_outputs else loss
 
@@ -258,6 +305,8 @@ class ClsTrainer(Trainer):
 
         # add save the eval metric to db
         eval_end_time = TimeUtils.now_str()
+
+        self.save_best_model(eval_metrics)
 
         ######################################################################
         # 指标汇总

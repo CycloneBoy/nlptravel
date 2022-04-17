@@ -35,6 +35,9 @@ class ModelArguments:
     hidden_dropout: float = field(default=0.5, metadata={"help": "预训练模型输出向量表示的dropout"})
     ner_num_labels: int = field(default=34, metadata={"help": "需要预测的标签数量"})
     loss_type: str = field(default="ce", metadata={"help": "损失函数类型，['ce', 'bce', 'dice', 'focal', 'adaptive_dice']"})
+    loss_ignore_index: int = field(default=-11, metadata={"help": "loss_ignore_index"})
+    loss_reduction: str = field(default="default", metadata={"help": "loss_reduction:mean"})
+
     activate_func: str = field(default="gelu", metadata={"help": "激活函数类型"})
     mrc_span_loss_candidates: str = field(default="gold_pred_random",
                                           metadata={"help": "Candidates used to compute span loss"})
@@ -42,6 +45,10 @@ class ModelArguments:
     mrc_construct_entity_span: str = field(default="start_end_match",
                                            metadata={
                                                "help": "bert mrc模型实体匹配方法：start_end_match,match,start_and_end,start_end"})
+
+    ## focal loss
+    focal_gamma: float = field(default=2, metadata={"help": "focal_gamma"})
+
     ## dice loss
     dice_smooth: float = field(default=1, metadata={"help": "smooth value of dice loss"})
     dice_ohem: float = field(default=0.3, metadata={"help": "ohem ratio of dice loss"})
@@ -69,6 +76,8 @@ class ModelArguments:
     num_filters: int = field(default=256, metadata={"help": "num_filters"})
     filter_sizes: str = field(default="2,3,4", metadata={"help": "filter_sizes"})
     loss_weight: float = field(default=1.0, metadata={"help": "loss_weight"})
+    early_stopping_patience: int = field(default=-1, metadata={"help": "early_stopping_patience"})
+    early_stopping_threshold: int = field(default=0.005, metadata={"help": "early_stopping_threshold"})
 
     model_name_or_path: Optional[str] = field(
         default=NlpPretrain.ROBERTA_CHINESE_WWM_EXT_PYTORCH.path,
