@@ -52,6 +52,7 @@ class CmdUtils(BaseUtil):
 
     @staticmethod
     def modify_constants_py_file(run_env=None):
+        current_src_dir = f"{Constants.SRC_DIR}"
         if run_env is None:
             current_dir = os.path.abspath(CmdUtils.run_cmd(["pwd"]))
             print(f"current_dir: {current_dir}")
@@ -59,17 +60,18 @@ class CmdUtils(BaseUtil):
             run_env = "win"
             if current_dir.startswith("/kaggle"):
                 run_env = "kaggle"
+                current_src_dir = f"/kaggle/working/nlptravel/nlptravel"
             elif current_dir.startswith("/content"):
                 run_env = "colab"
-
+                current_src_dir = f"/content/drive/MyDrive/NLP/nlptravel/nlptravel"
             print(f"current run env = {run_env}")
             if run_env == "win":
                 return
 
-        constants_file_name = f"{Constants.SRC_DIR}/utils/constant.py"
+        constants_file_name = f"{current_src_dir}/utils/constant.py"
         src_list = FileUtils.read_to_text_list(constants_file_name)
 
-        result_file = f"{Constants.SRC_DIR}/utils/constant2.py"
+        result_file = f"{current_src_dir}/utils/constant.py"
         results = []
         # run_env = "kaggle"
         # run_env = "colab"
